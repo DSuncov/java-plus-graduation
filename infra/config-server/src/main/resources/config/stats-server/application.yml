@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: stats-server
+  #config:
+    #activate:
+      #profile:
+        #on-profile: ci
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/stats}
+    username: ${SPRING_DATASOURCE_USERNAME:stats}
+    password: ${SPRING_DATASOURCE_PASSWORD:stats}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:./schema.sql
+
+logging:
+  level:
+    org:
+      springframework: ERROR
