@@ -1,6 +1,3 @@
-server:
-  port: 8080
-
 spring:
   cloud:
     gateway:
@@ -11,7 +8,7 @@ spring:
         - id: main_service_route
           uri: lb://main-service
           predicates:
-            - Path=/admin/**,/users/**,/categories/**,/events/**,/compilations/**,/comments/**
+            - Path=/**
 
 management:
   endpoint:

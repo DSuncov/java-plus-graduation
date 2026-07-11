@@ -12,6 +12,7 @@ public interface CommentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "commentator", ignore = true)
+    @Mapping(target = "event", ignore = true)
     Comment toComment(CommentRequestDto commentRequestDto);
 
     @Mapping(source = "commentator.id", target = "commentatorId")
