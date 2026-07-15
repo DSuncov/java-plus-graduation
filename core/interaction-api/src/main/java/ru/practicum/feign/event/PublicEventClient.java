@@ -5,7 +5,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(
         name = "event-service",
         contextId = "publicEventClient",
-        path = "/events"
+        path = "/events",
+        fallback = EventFallback.class,
+        fallbackFactory = PublicFallbackFactory.class
 )
 public interface PublicEventClient extends PublicEventOperations {
 }
