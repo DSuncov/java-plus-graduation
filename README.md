@@ -17,20 +17,8 @@
 | Сервис | Назначение | API | От каких сервисов зависит |
 |----|----|----|----|
 | comment-service | Управление комментариями и реакциями | `/admin/comments/*/**``/events/*/users/*comment/**``/events/*comments/**``/comments/**` | `user-service` (получение данных пользователя)`event-service` (получение данных о событии) |
-|
-|
-|
-|
 | event-service | Управление событиями, добавление категорий и создание подборок | `/admin/categories/**``/categories/**``/admin/compilations/**``/compilations/**``/admin/events/**``/users/*/events/**``/events/**` | `user-service` (получение данных пользователя)`request-service` (подсчет заявок, изменение статуса заявки, поиск заявок) |
-|
-|
-|
-|
-|
-|
-|
 | request-service | Управление заявками на участие в событиях | `/requests/**``/users/*/requests/**` | `user-service` (получение данных пользователя)`event-service` (получение данных о событии) |
-|
 | user-service | Администрирование пользователей | `/admins/users/**` | Не зависит от других сервисов |
 
 Также модуль включает общий модуль `interaction-api`, в котором находятся DTO, Feign-клиенты и обработчик ошибок.
