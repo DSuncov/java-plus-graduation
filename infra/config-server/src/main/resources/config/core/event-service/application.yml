@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: event-service
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:6542/event
+    username: event
+    password: event
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+  cloud:
+    openfeign:
+      okhttp:
+        enabled: true
+
+logging:
+  level:
+    org.springframework.jdbc.datasource.init: DEBUG
+    org.springframework: WARN
+    org.hibernate.SQL: DEBUG

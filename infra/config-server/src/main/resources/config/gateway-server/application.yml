@@ -5,10 +5,22 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: main_service_route
-          uri: lb://main-service
+        - id: event_service_route
+          uri: lb://event-service
           predicates:
-            - Path=/**
+            - Path=/admin/categories/**,/categories/**,/admin/compilations/**,/compilations/**,/admin/events/**,/users/*/events/**,/events/**
+        - id: user_service_route
+          uri: lb://user-service
+          predicates:
+            - Path=/admin/users/**
+        - id: request_service_route
+          uri: lb://request-service
+          predicates:
+            - Path=/requests/**,/users/*/requests/**
+        - id: comment_service_route
+          uri: lb://comment-service
+          predicates:
+            - Path=/admin/comments/*/**,/events/*/users/*/comment/**,/events/*/comments/**,/comments/**
 
 management:
   endpoint:
