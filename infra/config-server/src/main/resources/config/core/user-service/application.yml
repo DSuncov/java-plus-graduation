@@ -3,9 +3,9 @@ spring:
     name: user-service
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:6544/user
-    username: user
-    password: user
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
   jpa:
     defer-datasource-initialization: true
     hibernate:
