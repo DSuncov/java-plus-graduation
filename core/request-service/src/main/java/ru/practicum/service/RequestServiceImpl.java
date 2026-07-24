@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.CollectorClient;
 import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.request.EventRequestStatusUpdateRequest;
 import ru.practicum.dto.request.EventRequestStatusUpdateResult;
@@ -16,6 +17,7 @@ import ru.practicum.exception.NotFoundException;
 import ru.practicum.exception.ValidationException;
 import ru.practicum.feign.event.PrivateEventClient;
 import ru.practicum.feign.user.AdminUserClient;
+import ru.practicum.grpc.stats.collector.ActionTypeProto;
 import ru.practicum.mapper.RequestMapper;
 import ru.practicum.model.ParticipationRequest;
 import ru.practicum.repository.RequestRepository;
@@ -32,6 +34,7 @@ public class RequestServiceImpl implements RequestService {
     private final AdminUserClient userClient;
     private final PrivateEventClient eventClient;
     private final RequestMapper requestMapper;
+    private final CollectorClient collectorClient;
 
     @Override
     @Transactional(readOnly = true)
@@ -75,6 +78,8 @@ public class RequestServiceImpl implements RequestService {
         if (event.getParticipantLimit() != 0 && confirmedRequests >= event.getParticipantLimit()) {
             throw new ConflictException("Достигнут лимит участников для данного события");
         }
+
+        collectorClient.sendUserAction(userId, eventId, ActionTypeProto.ACTION_REGISTER);
 
         RequestStatus status;
         if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
@@ -190,5 +195,10 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<Object[]> countConfirmedRequestsForEvents(List<Long> events) {
         return requestRepository.countConfirmedRequestsForEvents(events);
+    }
+
+    @Override
+    public boolean isUserConformedRequest(Long userId, Long eventId) {
+        return requestRepository.isUserConformedRequest(userId, eventId);
     }
 }
