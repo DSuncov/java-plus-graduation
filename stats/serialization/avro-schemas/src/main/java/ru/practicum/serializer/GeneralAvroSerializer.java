@@ -1,0 +1,43 @@
+package ru.practicum.serializer;
+
+import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.io.DatumWriter;
+import org.apache.avro.io.EncoderFactory;
+import org.apache.avro.specific.SpecificDatumWriter;
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.kafka.common.errors.SerializationException;
+import org.apache.kafka.common.serialization.Serializer;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+public class GeneralAvroSerializer implements Serializer<SpecificRecordBase> {
+
+    private final EncoderFactory encoderFactory;
+    private BinaryEncoder binaryEncoder;
+
+    public GeneralAvroSerializer() {
+        this(EncoderFactory.get());
+    }
+
+    public GeneralAvroSerializer(EncoderFactory encoderFactory) {
+        this.encoderFactory = encoderFactory;
+    }
+
+    @Override
+    public byte[] serialize(String topic, SpecificRecordBase data) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            byte[] result = null;
+            binaryEncoder = encoderFactory.binaryEncoder(out, binaryEncoder);
+            if (data != null) {
+                DatumWriter<SpecificRecordBase> writer = new SpecificDatumWriter<>(data.getSchema());
+                writer.write(data, binaryEncoder);
+                binaryEncoder.flush();
+                result = out.toByteArray();
+            }
+            return result;
+        } catch (IOException exception) {
+            throw new SerializationException("Ошибка при сериализации данных для топика.");
+        }
+    }
+}

@@ -4,9 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.EventShortDto;
 
@@ -28,5 +26,18 @@ public interface PublicEventOperations {
             HttpServletRequest httpServletRequest);
 
     @GetMapping("/{id}")
-    ResponseEntity<EventFullDto> findEventById(@PathVariable @NotNull @Positive Long id, HttpServletRequest httpServletRequest);
+    ResponseEntity<EventFullDto> findEventById(
+            @PathVariable @NotNull @Positive Long id,
+            @RequestHeader("X-EWM-USER-ID") Long userId,
+            HttpServletRequest httpServletRequest);
+
+    @GetMapping("/recommendations")
+    ResponseEntity<List<EventShortDto>> getRecommendations(
+            @RequestHeader("X-EWM-USER-ID") Long userId,
+            @RequestParam(defaultValue = "10") int maxResults);
+
+    @PutMapping("/{eventId}/like")
+    ResponseEntity<Void> likeToEvent(
+            @PathVariable @NotNull @Positive Long eventId,
+            @RequestHeader("X-EWM-USER-ID") Long userId);
 }

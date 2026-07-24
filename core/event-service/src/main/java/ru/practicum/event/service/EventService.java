@@ -34,4 +34,10 @@ public interface EventService {
     List<ParticipationRequestDto> getEventParticipants(Long userId, Long eventId);
 
     EventRequestStatusUpdateResult changeRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest);
+
+    Boolean existEventById(Long id);
+
+    List<EventShortDto> getRecommendations(Long userId, int maxResults);
+
+    void likeToEvent(Long eventId, Long userId);
 }

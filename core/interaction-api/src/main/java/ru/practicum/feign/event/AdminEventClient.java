@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
         contextId = "adminEventClient",
         path = "/admin/events",
         fallback = EventFallback.class,
-        fallbackFactory = AdmminEventFallbackFactory.class
+        fallbackFactory = AdminEventFallbackFactory.class
 )
 public interface AdminEventClient extends AdminEventOperations {
 }

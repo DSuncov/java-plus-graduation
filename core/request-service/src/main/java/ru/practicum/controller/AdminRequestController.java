@@ -48,4 +48,11 @@ public class AdminRequestController implements AdminRequestOperations {
             @RequestBody @NotNull @Valid EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
         return requestService.changeRequestStatus(userId, eventId, eventRequestStatusUpdateRequest);
     }
+
+    @Override
+    public boolean isUserConformedRequest(
+            @PathVariable("userId") @NotNull @Positive Long userId,
+            @PathVariable("eventId") @NotNull @Positive Long eventId) {
+        return requestService.isUserConformedRequest(userId, eventId);
+    }
 }
