@@ -26,4 +26,9 @@ public class RequestFallback implements AdminRequestClient {
     public EventRequestStatusUpdateResult patchStatusOfRequest(Long userId, Long eventId, EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
         throw new RuntimeException("Сервис недоступен.");
     }
+
+    @Override
+    public boolean isUserConformedRequest(Long userId, Long eventId) {
+        throw new RuntimeException("Сервис недоступен.");
+    }
 }

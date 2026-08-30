@@ -26,4 +26,7 @@ public interface AdminEventOperations {
     ResponseEntity<EventFullDto> patchEvent(
             @PathVariable("eventId") @NotNull @Positive Long eventId,
             @Valid @RequestBody @NotNull PatchEventDto patchEventDto);
+
+    @GetMapping("/{id}")
+    Boolean existEventById(@PathVariable @NotNull @Positive Long id);
 }

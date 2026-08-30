@@ -19,6 +19,7 @@ import ru.practicum.enums.CommentsSortType;
 import ru.practicum.enums.DirectionSortType;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
+import ru.practicum.feign.event.AdminEventClient;
 import ru.practicum.feign.event.PublicEventClient;
 import ru.practicum.feign.user.AdminUserClient;
 import ru.practicum.reaction.mapper.ReactionMapper;
@@ -37,7 +38,8 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final AdminUserClient userClient;
-    private final PublicEventClient eventClient;
+    private final AdminEventClient adminEventClient;
+    private final PublicEventClient publicEventClient;
     private final CommentMapper commentMapper;
     private final ReactionRepository reactionRepository;
     private final ReactionMapper reactionMapper;
@@ -51,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
 
         UserShortDto commentator = userClient.getUserById(commentatorId);
 
-        EventFullDto event = eventClient.findEventById(eventId, httpServletRequest).getBody();
+        EventFullDto event = publicEventClient.findEventById(eventId, commentatorId, httpServletRequest).getBody();
 
         Comment commentCreate = Comment.builder()
                 .commentatorId(commentatorId)
@@ -100,7 +102,7 @@ public class CommentServiceImpl implements CommentService {
         log.info("Удаление комментария пользователем: eventId={}, commentId={}, userId={}",
                 eventId, commentId, userId);
 
-        EventFullDto event = eventClient.findEventById(eventId, httpServletRequest).getBody();
+        EventFullDto event = publicEventClient.findEventById(eventId, userId, httpServletRequest).getBody();
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> {
             log.warn("Комментарий с id={} не найден при удалении", commentId);
@@ -141,7 +143,7 @@ public class CommentServiceImpl implements CommentService {
         log.info("Запрос комментариев события: eventId={}, sortOrder={}, from={}, size={}",
                 eventId, sortOrder, from, size);
 
-        if (eventClient.findEventById(eventId, httpServletRequest) == null) {
+        if (adminEventClient.existEventById(eventId) == null) {
             log.warn("Событие с id={} не найдено при запросе комментариев", eventId);
             throw new NotFoundException("мероприятия с id = " + eventId + " не существует");
         }

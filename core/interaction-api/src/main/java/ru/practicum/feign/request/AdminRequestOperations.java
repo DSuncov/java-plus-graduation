@@ -30,4 +30,9 @@ public interface AdminRequestOperations {
             @PathVariable("userId") @NotNull @Positive Long userId,
             @PathVariable("eventId") @NotNull @Positive Long eventId,
             @RequestBody @NotNull @Valid EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest);
+
+    @GetMapping("/users/{userId}/events/{eventId}/confirm")
+    boolean isUserConformedRequest(
+            @PathVariable("userId") @NotNull @Positive Long userId,
+            @PathVariable("eventId") @NotNull @Positive Long eventId);
 }

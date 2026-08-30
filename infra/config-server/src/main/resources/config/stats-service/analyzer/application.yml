@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: analyzer
+  config:
+    activate:
+      profile:
+        on-profile: ci
+
+app:
+  kafka:
+    bootstrap-servers: "localhost:9092"
+    key-deserializer: "org.apache.kafka.common.serialization.StringDeserializer"
+    enable-auto-commit: false
+    fetch-max-wait-ms: 500
+    events-similarity-consumer:
+      topic: "stats.events-similarity.v1"
+      group-id: "analyzer-event-similarity-group"
+      value-deserializer: "ru.practicum.deserializer.EventSimilarityDeserializer"
+      max-poll-records: 100
+      auto-offset-reset: earliest
+    user-action-consumer:
+      topic: "stats.user-actions.v1"
+      group-id: "analyzer-user-action-group"
+      value-deserializer: "ru.practicum.deserializer.UserActionDeserializer"
+      max-poll-records: 100
+      auto-offset-reset: earliest
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:6546/stats
+    username: stats
+    password: stats
+  jpa:
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:./schema.sql
+
+grpc:
+  server:
+    port: 0
+  client:
+    analyzer:
+      address: 'discovery:///analyzer'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+logging:
+  level:
+    ru:
+      practicum:
+        kafka: INFO
+    org:
+      org.springframework.boot.context.properties: DEBUG
+      apache:
+        kafka: WARN
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

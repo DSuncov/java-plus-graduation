@@ -9,7 +9,7 @@ spring:
         native:
           search-locations:
             - classpath:config/core/{application}
-            - classpath:config/{application}
+            - classpath:config/stats-service/{application}
             - classpath:config/{application}
 
 server:

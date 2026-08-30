@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: aggregator
+
+aggregator:
+  kafka:
+    bootstrap-servers: "localhost:9092"
+    producer:
+      topic: "stats.events-similarity.v1"
+      key-serializer: "org.apache.kafka.common.serialization.StringSerializer"
+      value-serializer: "ru.practicum.serializer.GeneralAvroSerializer"
+    consumer:
+      topic: "stats.user-actions.v1"
+      key-deserializer: "org.apache.kafka.common.serialization.StringDeserializer"
+      value-deserializer: "ru.practicum.deserializer.UserActionDeserializer"
+      group-id: "aggregator-group"
+      auto-offset-reset: earliest
+      fetch-max-wait-ms: 5000
+      max-poll-records: 100
+      enable-auto-commit: false
+
+logging:
+  level:
+    ru:
+      practicum:
+        kafka: INFO
+    org:
+      org.springframework.boot.context.properties: DEBUG
+      apache:
+        kafka: WARN
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

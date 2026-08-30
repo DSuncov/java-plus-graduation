@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.EventShortDto;
+import ru.practicum.dto.user.UserShortDto;
 import ru.practicum.event.param.PublicEventParam;
 import ru.practicum.event.service.EventService;
 import ru.practicum.feign.event.PublicEventOperations;
@@ -40,7 +41,21 @@ public class PublicEventController implements PublicEventOperations {
     }
 
     @Override
-    public ResponseEntity<EventFullDto> findEventById(@PathVariable @NotNull @Positive Long id, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<EventFullDto> findEventById(
+            @PathVariable @NotNull @Positive Long id,
+            @RequestHeader("X-EWM-USER-ID") Long userId,
+            HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok(eventService.findEventById(id, httpServletRequest));
+    }
+
+    @Override
+    public ResponseEntity<List<EventShortDto>> getRecommendations(Long userId, int maxResults) {
+        return ResponseEntity.ok(eventService.getRecommendations(userId, maxResults));
+    }
+
+    @Override
+    public ResponseEntity<Void> likeToEvent(Long eventId, Long userId) {
+        eventService.likeToEvent(eventId, userId);
+        return ResponseEntity.ok().build();
     }
 }
