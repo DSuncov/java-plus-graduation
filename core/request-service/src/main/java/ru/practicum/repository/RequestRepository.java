@@ -37,4 +37,8 @@ public interface RequestRepository extends JpaRepository<ParticipationRequest, L
     @Query("UPDATE ParticipationRequest pr SET pr.status = 'REJECTED' " +
             "WHERE pr.eventId = :eventId AND pr.status = 'PENDING'")
     void rejectAllPendingRequestsByEventId(@Param("eventId") Long eventId);
+
+    @Query("SELECT CASE WHEN COUNT(pr) > 0 THEN true ELSE false END FROM ParticipationRequest pr " +
+            "WHERE pr.requesterId = :userId AND pr.eventId = :eventId AND pr.status = 'CONFIRMED'")
+    boolean isUserConformedRequest(Long userId, Long eventId);
 }

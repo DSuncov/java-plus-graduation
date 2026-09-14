@@ -25,6 +25,11 @@ public class EventFallback implements AdminEventClient, PrivateEventClient, Publ
     }
 
     @Override
+    public Boolean existEventById(Long id) {
+        throw new RuntimeException("Сервис недоступен.");
+    }
+
+    @Override
     public ResponseEntity<List<EventShortDto>> findEventsBy(Long userId, Integer from, Integer size) {
         throw new RuntimeException("Сервис недоступен.");
     }
@@ -60,7 +65,17 @@ public class EventFallback implements AdminEventClient, PrivateEventClient, Publ
     }
 
     @Override
-    public ResponseEntity<EventFullDto> findEventById(Long id, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<EventFullDto> findEventById(Long id, Long userId, HttpServletRequest httpServletRequest) {
+        throw new RuntimeException("Сервис недоступен.");
+    }
+
+    @Override
+    public ResponseEntity<List<EventShortDto>> getRecommendations(Long userId, int maxResults) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> likeToEvent(Long eventId, Long userId) {
         throw new RuntimeException("Сервис недоступен.");
     }
 }
