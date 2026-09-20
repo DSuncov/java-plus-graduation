@@ -45,4 +45,9 @@ public class AdminEventController implements AdminEventOperations {
             @Valid @RequestBody @NotNull PatchEventDto patchEventDto) {
         return ResponseEntity.ok(eventService.patchEvent(id, patchEventDto));
     }
+
+    @Override
+    public Boolean existEventById(@PathVariable @NotNull @Positive Long id) {
+        return eventService.existEventById(id);
+    }
 }

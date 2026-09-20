@@ -3,9 +3,9 @@ spring:
     name: request-service
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:6543/request
-    username: request
-    password: request
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
   jpa:
     defer-datasource-initialization: true
     hibernate:
@@ -19,6 +19,10 @@ spring:
     openfeign:
       okhttp:
         enabled: true
+
+grpc:
+  server:
+    port: 0
 
 logging:
   level:

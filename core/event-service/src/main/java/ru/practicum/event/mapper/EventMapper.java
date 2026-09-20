@@ -56,11 +56,11 @@ public class EventMapper {
     }
 
     public List<EventShortDto> toListShortDtoWithViewsAndRequests(
-            List<Event> events, Map<Long, Long> viewsForEvents, Map<Long, Long> requests, Map<Event, UserShortDto> userShortDtos) {
+            List<Event> events, Map<Long, Double> viewsForEvents, Map<Long, Long> requests, Map<Event, UserShortDto> userShortDtos) {
         return events.stream()
                 .map(e -> {
                     EventShortDto eventShortDto = toShortDto(e, userShortDtos.get(e));
-                    eventShortDto.setViews(viewsForEvents.getOrDefault(e.getId(), 0L));
+                    eventShortDto.setRating(viewsForEvents.getOrDefault(e.getId(), 0.0));
                     eventShortDto.setConfirmedRequests(requests.getOrDefault(e.getId(), 0L));
                     return eventShortDto;
                 })
@@ -68,11 +68,11 @@ public class EventMapper {
     }
 
     public List<EventFullDto> toListFullDtoWithViewsAndRequests(
-            List<Event> events, Map<Long, Long> viewsForEvents, Map<Long, Long> requests, Map<Event, UserShortDto> userShortDtos) {
+            List<Event> events, Map<Long, Double> viewsForEvents, Map<Long, Long> requests, Map<Event, UserShortDto> userShortDtos) {
         return events.stream()
                 .map(e -> {
                     EventFullDto eventFullDto = toFullDto(e, userShortDtos.get(e));
-                    eventFullDto.setViews(viewsForEvents.getOrDefault(e.getId(), 0L));
+                    eventFullDto.setRating(viewsForEvents.getOrDefault(e.getId(), 0.0));
                     eventFullDto.setConfirmedRequests(requests.getOrDefault(e.getId(), 0L));
                     return eventFullDto;
                 })

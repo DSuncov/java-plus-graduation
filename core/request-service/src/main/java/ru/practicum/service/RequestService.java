@@ -21,4 +21,6 @@ public interface RequestService {
     Long countConfirmedRequestsByEventId(Long eventId);
 
     List<Object[]> countConfirmedRequestsForEvents(List<Long> events);
+
+    boolean isUserConformedRequest(Long userId, Long eventId);
 }

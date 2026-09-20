@@ -3,9 +3,9 @@ spring:
     name: comment-service
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:6545/comment
-    username: comment
-    password: comment
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
   jpa:
     defer-datasource-initialization: true
     hibernate:
